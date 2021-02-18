@@ -89,11 +89,11 @@ private  WifiManager wifiManager;
         wifiSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+               WifiManager wifiManager2= (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
                 if (isChecked)
                 {
                     txtwifistatus.setText("Wifi Turn On");
-                    wifiManager.setWifiEnabled(true);
+                    wifiManager2.setWifiEnabled(true);
                     Intent serviceIntent = new Intent(getApplicationContext(), Services.class);
                     serviceIntent.putExtra("inputExtra", "Wifi turn On");
                     ContextCompat.startForegroundService(getApplicationContext(), serviceIntent);
@@ -101,8 +101,8 @@ private  WifiManager wifiManager;
                     Toast.makeText(MainActivity.this," Wifi turn on", Toast.LENGTH_SHORT).show();
                 }else
                 {
-                    txtwifistatus.setText("Wifi Turn On");
-                    wifiManager.setWifiEnabled(false);
+                    txtwifistatus.setText("Wifi Turn OFF");
+                    wifiManager2.setWifiEnabled(false);
                     Intent serviceIntent = new Intent(getApplicationContext(), Services.class);
                     serviceIntent.putExtra("inputExtra", "Wifi turn Off");
                     ContextCompat.startForegroundService(getApplicationContext(), serviceIntent);
@@ -125,9 +125,11 @@ private  WifiManager wifiManager;
         IntentFilter intentFilter = new IntentFilter(WifiManager.WIFI_STATE_CHANGED_ACTION);
         IntentFilter intentFilter2 = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
 
+registerReceiver(Bluetooth,intentFilter2);
 
+registerReceiver(ReceiverState,intentFilter2);
         registerReceiver(wifiStateReceiver, intentFilter);
-        registerReceiver(ReceiverState,intentFilter2);
+
     }
 
     @Override
@@ -135,7 +137,7 @@ private  WifiManager wifiManager;
         super.onStop();
         unregisterReceiver(wifiStateReceiver);
         unregisterReceiver(ReceiverState);
-
+        unregisterReceiver(Bluetooth);
 
     }
 
@@ -175,13 +177,6 @@ private  WifiManager wifiManager;
 
             }
 
-            if (status.equals("Mobile Bluetooth enabled"))
-            {
-                swbt.setChecked(true);
-            }else
-            {
-                swbt.setChecked(true);
-            }
             Intent serviceIntent = new Intent(getApplicationContext(), Services.class);
             serviceIntent.putExtra("inputExtra", status);
             ContextCompat.startForegroundService(getApplicationContext(), serviceIntent);        }
@@ -191,7 +186,22 @@ private  WifiManager wifiManager;
     };
 
 
-
+    private BroadcastReceiver Bluetooth=new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            BluetoothAdapter bluetoothAdapter=BluetoothAdapter.getDefaultAdapter();
+            if (bluetoothAdapter.isEnabled())
+            {
+                txtbtstatus.setText("Bluetooth Turn On");
+                swbt.setChecked(true);
+            }
+            else
+            {
+                txtbtstatus.setText("Bluetooth Turn OFF");
+                swbt.setChecked(false);
+            }
+        }
+    };
 
 
 

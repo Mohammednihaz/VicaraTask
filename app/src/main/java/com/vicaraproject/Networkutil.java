@@ -10,12 +10,9 @@ public class Networkutil {
         String status = null;
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        if (activeNetwork.getType() == ConnectivityManager.TYPE_BLUETOOTH)
-        {
-            status = "Mobile Bluetooth enabled";
-            return status;
-        }
+
         if (activeNetwork != null) {
+
             if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
                 status = "Wifi enabled";
                 return status;
