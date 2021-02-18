@@ -57,6 +57,7 @@ private  WifiManager wifiManager;
         RLWifi.setBackgroundColor(Color.RED);
 
 
+//Enable disable for bluetooth control
 
  swbt.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
      @Override
@@ -85,15 +86,14 @@ private  WifiManager wifiManager;
          }
      }
  });
-
+        // Enable disable for wifi control
         wifiSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-               WifiManager wifiManager2= (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
                 if (isChecked)
                 {
                     txtwifistatus.setText("Wifi Turn On");
-                    wifiManager2.setWifiEnabled(true);
+                    wifiManager.setWifiEnabled(true);
                     Intent serviceIntent = new Intent(getApplicationContext(), Services.class);
                     serviceIntent.putExtra("inputExtra", "Wifi turn On");
                     ContextCompat.startForegroundService(getApplicationContext(), serviceIntent);
@@ -102,7 +102,7 @@ private  WifiManager wifiManager;
                 }else
                 {
                     txtwifistatus.setText("Wifi Turn OFF");
-                    wifiManager2.setWifiEnabled(false);
+                    wifiManager.setWifiEnabled(false);
                     Intent serviceIntent = new Intent(getApplicationContext(), Services.class);
                     serviceIntent.putExtra("inputExtra", "Wifi turn Off");
                     ContextCompat.startForegroundService(getApplicationContext(), serviceIntent);
@@ -140,7 +140,7 @@ registerReceiver(ReceiverState,intentFilter2);
         unregisterReceiver(Bluetooth);
 
     }
-
+    //global wifi state change
     private BroadcastReceiver wifiStateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -160,6 +160,8 @@ registerReceiver(ReceiverState,intentFilter2);
 
 
     };
+
+    //checking  or state for all the connection
     private BroadcastReceiver ReceiverState = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -185,10 +187,11 @@ registerReceiver(ReceiverState,intentFilter2);
 
     };
 
-
+//global bluetooth control
     private BroadcastReceiver Bluetooth=new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+
             BluetoothAdapter bluetoothAdapter=BluetoothAdapter.getDefaultAdapter();
             if (bluetoothAdapter.isEnabled())
             {

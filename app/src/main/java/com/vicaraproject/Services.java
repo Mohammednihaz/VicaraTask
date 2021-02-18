@@ -20,6 +20,7 @@ public class Services extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        //its run background service for notification
         String input = intent.getStringExtra("inputExtra");
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,

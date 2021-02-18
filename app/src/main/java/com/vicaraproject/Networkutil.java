@@ -7,6 +7,7 @@ import android.net.NetworkInfo;
 public class Networkutil {
 
     public static String getConnectivityStatusString(Context context) {
+        //network state checking
         String status = null;
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
